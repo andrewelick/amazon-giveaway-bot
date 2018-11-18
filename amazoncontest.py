@@ -38,16 +38,21 @@ def enter_contest(email, password, name):
 
     #Goes to each Page URL and gathers all the prize URLs and puts them into the list item_urls_list
     for amazon_url in url_list:
-        response = get(amazon_url)
-        amazon_soup = BeautifulSoup(response.text, 'html.parser')
-        type(amazon_soup)
 
-        giveaway_container = amazon_soup.find("div", id='giveaway-grid')
-        giveaway_list = giveaway_container.findChildren('div', class_='giveawayItemContainer')
+        try:
+            response = get(amazon_url)
+            amazon_soup = BeautifulSoup(response.text, 'html.parser')
+            type(amazon_soup)
 
-        for items in giveaway_list:
-            giveaway_items = items.find('a')['href']
-            item_urls_list.append(giveaway_items)
+            giveaway_container = amazon_soup.find("div", id='giveaway-grid')
+            giveaway_list = giveaway_container.findChildren('div', class_='giveawayItemContainer')
+
+            for items in giveaway_list:
+                giveaway_items = items.find('a')['href']
+                item_urls_list.append(giveaway_items)
+        except:
+            print ("Could not retrieve prizes from "+amazon_url)
+            continue
 
         #Wait some time
         random_time = randint(1,3)
@@ -57,6 +62,8 @@ def enter_contest(email, password, name):
     print ("")
     print ("100% of data loaded, running script")
 
+    if item_urls_list == "":
+        enter_contest(email, password, name)
 
     #Individual item number, used to select the next item in the list
     item_number = 1
