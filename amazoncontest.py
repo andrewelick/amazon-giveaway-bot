@@ -11,6 +11,8 @@ from random import randint
 import asyncio
 import concurrent.futures
 
+thread_count = 1
+
 async def async_get_page_url(amazon_url):
     print (amazon_url)
     return_items = []
@@ -43,9 +45,10 @@ async def gather_page_urls(url_list):
     l = await asyncio.gather(*item_urls_list)
     return [item for sublist in l for item in sublist]
 
-def run(item_number, link):
+def run(item_number, link, user_email, user_password, first_name):
     #Print the item number
-    print ("Item #"+str(item_number)+": "+link)
+    output_string = "\n"
+    output_string += "Item #"+str(item_number)+": "+link
     item_number += 1
 
     #Open Firefox with the current url for the item
@@ -53,7 +56,7 @@ def run(item_number, link):
         browser = webdriver.Firefox(executable_path=os.path.join(os.path.dirname('/Users/mdobro/Code/amazon-giveaway-bot/'), 'geckodriver'))
         browser.get((link))
     except:
-        print ("Could not load page")
+        output_string += "\n" + "Could not load page"
 
     #Wait some time
     random_time = randint(1,3)
@@ -67,8 +70,13 @@ def run(item_number, link):
         random_time = randint(2,3)
         time.sleep(random_time)
         login_button = browser.find_element_by_id('signInSubmit').click()
-    except:
-        print ("Contest has ended, continuing onward")
+    except Exception as e:
+        print (e)
+        output_string += "\n" + "Contest has ended, continuing onward"
+        browser.quit()
+        print (output_string)
+        return
+
 
     #Waits some time
     random_time = randint(1,3)
@@ -89,29 +97,33 @@ def run(item_number, link):
 
     #If video is on the page either click the video and wait or just wait, else, click the giveaway box
     if amazon_video != False:
-        enter_contest = False
         try:
             click_video = browser.find_element_by_id("airy-outer-container")
             click_video.click()
-            print ("Waiting 15 seconds for amazon video")
+            output_string += "\n" + "Waiting 15 seconds for amazon video"
             #Wait some time
             random_time = randint(16, 18)
             time.sleep(random_time)
             continue_button = browser.find_element_by_name('continue').click()
         except:
             click_video = False
-            print ("Amazon video failed")
+            output_string += "\n" + "Amazon video failed"
+            browser.quit()
+            print (output_string)
+            return
 
     elif youtube_video != False:
-        enter_contest = False
         try:
-            print ("Waiting 15 seconds for youtube video")
+            output_string += "\n" + "Waiting 15 seconds for youtube video"
             #Wait some time
             random_time = randint(16,18)
             time.sleep(random_time)
             continue_button = browser.find_element_by_name('continue').click()
         except:
-            print ("Youtube video script failed")
+            output_string += "\n" + "Youtube video script failed"
+            browser.quit()
+            print (output_string)
+            return
     else:
         try:
             click_to_win = browser.find_element_by_id('box_click_target')
@@ -119,25 +131,19 @@ def run(item_number, link):
             click_to_win = False
 
         if click_to_win != False:
-            print ("Entered the contest")
-            enter_contest = False
+            output_string += "\n" + "Entering contest..."
             #Wait some time
             random_time = randint(2,4)
             time.sleep(random_time)
             click_to_win.click()
         else:
-            print ("Already Entered")
-            enter_contest = True
+            output_string += "\n" + "Already Entered"
+            browser.quit()
+            print (output_string)
+            return
 
-    #Wait some time if item has not been played yet
-    if enter_contest is False:
         #Wait some time
         random_time = randint(14, 15)
-        time.sleep(random_time)
-
-    else:
-        #Wait some time
-        random_time = randint(2,3)
         time.sleep(random_time)
 
     did_you_win = ""
@@ -146,11 +152,11 @@ def run(item_number, link):
         did_you_win = did_you_win.text
         did_you_win = did_you_win.lower()
     except:
-        print ("Could not find winning status")
+        output_string += "\n" + "Could not find winning status"
 
     #Check if you won the prize
     if did_you_win == first_name+", you won!":
-        print ("You've won!")
+        output_string += "\n" + "******** You've won! ********"
         try:
             claim_prize = browser.find_element_by_name('ShipMyPrize')
             claim_prize.click()
@@ -160,13 +166,13 @@ def run(item_number, link):
         random_time = randint(2,4)
         time.sleep(random_time)
     elif did_you_win == first_name+", your entry has been received":
-        print ('This contest will select a winner later. If you won, you will notified via email.')
+        output_string += "\n" + 'This contest will select a winner later. If you won, you will notified via email.'
     else:
-        print ('You did not win :/')
+        output_string += "\n" + 'You did not win :/'
         #Close the firefox window
 
-    #browser.quit()
-    print ("")
+    browser.quit()
+    print (output_string)
 
 #Script the opens amazon, enters user information, and enters in every contest
 async def enter_contest(email, password, name):
@@ -198,9 +204,14 @@ async def enter_contest(email, password, name):
     if item_urls_list == "":
         enter_contest(email, password, name)
 
-    thread_count = 5
     executor = concurrent.futures.ProcessPoolExecutor(thread_count)
-    futures = [executor.submit(run, index, link) for index, link in enumerate(item_urls_list)]
+    
+    futures = []
+    for index, link in enumerate(item_urls_list):
+        #Wait some time
+        random_time = randint(2,3)
+        time.sleep(random_time)
+        futures.append(executor.submit(run, index, link, user_email, user_password, first_name))
     concurrent.futures.wait(futures)
 
     #Starts the script over once it completes the last item
