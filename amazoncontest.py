@@ -11,11 +11,15 @@ import time
 from random import randint
 import concurrent.futures
 
+loading_thread_count = 5
 thread_count = 5
 max_page_count = 30
 current_page_number = 0
 
 def async_get_page_url(amazon_url):
+    #Waits some time
+    random_time = randint(0, 1)
+    time.sleep(random_time)
     return_items = []
     try:
         response = get(amazon_url)
@@ -31,6 +35,8 @@ def async_get_page_url(amazon_url):
         print ("Successful retrieved items from "+amazon_url)
         return return_items
     except Exception as e:
+        print ( e )
+        print (response.value)
         print ("Could not retrieve prizes from "+amazon_url)
         return return_items
 
@@ -40,7 +46,7 @@ def gather_page_urls(url_list):
 
     print ("\nLoading script data...")
 
-    executor = concurrent.futures.ThreadPoolExecutor(thread_count)
+    executor = concurrent.futures.ThreadPoolExecutor(loading_thread_count)
     
     futures = []
     for amazon_url in url_list:
