@@ -8369,3 +8369,213 @@ JavaScript error: resource://gre/modules/WebProgressChild.jsm, line 58: TypeErro
 1542790568183	Marionette	INFO	Listening on port 61953
 1542790568219	Marionette	WARN	TLS certificate errors will be ignored for this session
 [GFX1-]: Receive IPC close with reason=AbnormalShutdown
+1542791282329	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.kDD67lTCUp5U"
+1542791282332	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.iXMPz6cCGnOn"
+1542791282332	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.9wIQ7I4Zwfkx"
+1542791282335	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.FpeG9qMgyYTD"
+1542791282338	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.L2Nc54J91grM"
+1542791282339	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.UgYXKvCBhaof"
+1542791282340	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.XiXPNbbsi6oZ"
+1542791282341	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.50JX2olQzd4g"
+1542791282341	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.75GwLJMXyCFc"
+1542791282341	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.Sp6FdHVKyYv2"
+1542791292704	Marionette	INFO	Listening on port 62250
+1542791292947	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791294086	Marionette	INFO	Listening on port 62246
+1542791294302	Marionette	INFO	Listening on port 62242
+1542791294357	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791294448	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791294541	Marionette	INFO	Listening on port 62244
+1542791294566	Marionette	INFO	Listening on port 62247
+1542791294923	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791295062	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791295661	Marionette	INFO	Listening on port 62243
+1542791295961	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791296309	Marionette	INFO	Listening on port 62248
+1542791296467	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791296921	Marionette	INFO	Listening on port 62245
+1542791297176	Marionette	WARN	TLS certificate errors will be ignored for this session
+console.error: "Could not write session state file " (new Error("_initWorker called too early! Please read the session file from disk first.", "resource:///modules/sessionstore/SessionFile.jsm", 334)) "_initWorker/<@resource:///modules/sessionstore/SessionFile.jsm:334:15\n_initWorker@resource:///modules/sessionstore/SessionFile.jsm:327:12\n_postToWorker@resource:///modules/sessionstore/SessionFile.jsm:351:11\nwrite@resource:///modules/sessionstore/SessionFile.jsm:390:19\nwrite@resource:///modules/sessionstore/SessionFile.jsm:63:12\n_writeState@resource:///modules/sessionstore/SessionSaver.jsm:357:12\n_saveState@resource:///modules/sessionstore/SessionSaver.jsm:295:12\n_saveStateAsync@resource:///modules/sessionstore/SessionSaver.jsm:341:5\nsaveStateAsyncWhenIdle@resource:///modules/sessionstore/SessionSaver.jsm:192:9\n"
+1542791297558	Marionette	INFO	Listening on port 62249
+1542791298076	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791299302	Marionette	INFO	Listening on port 62241
+1542791299716	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791314871	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.BxKeGue7GY0X"
+1542791315387	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.KVJnCVTFkqai"
+1542791315553	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.qYUIzTbjawzZ"
+1542791316120	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.DXZm8PfOMD7W"
+1542791317351	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.KFftKmztqVma"
+1542791317728	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.pSKw7WP63vLc"
+1542791319015	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.8BOa9zToCvZZ"
+1542791319395	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.ErmnkDrUc8YQ"
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[Child 32481, Chrome_ChildThread] WARNING: pipe error: Broken pipe: file /builds/worker/workspace/build/src/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 729
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+1542791323503	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.7OmwZAFVoHdh"
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+1542791323888	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.rZ3QcqocAvC5"
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[Child 32494, Chrome_ChildThread] WARNING: pipe error: Broken pipe: file /builds/worker/workspace/build/src/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 729
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[Child 32471, Chrome_ChildThread] WARNING: pipe error: Broken pipe: file /builds/worker/workspace/build/src/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 729
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[Child 32489, Chrome_ChildThread] WARNING: pipe error: Broken pipe: file /builds/worker/workspace/build/src/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 729
+1542791327190	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.PNfSDtzjFR8A"
+1542791327191	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.SgLYm2oTNLgs"
+1542791327198	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.6egui6PVem7Y"
+1542791327221	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.8yEIPY15vDC8"
+1542791327230	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.1pdvX0kZCEFh"
+1542791327243	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.hNj0aJgXc8qh"
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+1542791328162	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.QjBCu8F89Y4m"
+1542791329824	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.8YmNXnHnM3WZ"
+1542791329824	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.JlrMfjokUdLD"
+1542791329824	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.4MUBbmQfjJFc"
+1542791333861	Marionette	INFO	Listening on port 64497
+1542791333892	Marionette	INFO	Listening on port 64496
+1542791333955	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791333969	Marionette	INFO	Listening on port 64498
+1542791334055	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791334096	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791334647	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.gsfyEeq6b1ki"
+1542791335678	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.CwVc5cmNnNys"
+1542791335742	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.Bq3nNJ5K2WjJ"
+JavaScript error: resource:///actors/PageStyleChild.jsm, line 17: TypeError: mm is null
+1542791337686	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.Nl3LGlIUVguh"
+1542791337689	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.IE6tW53HzavS"
+1542791338616	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.eEhigsT3JM5m"
+1542791338659	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.HIPXeF7vFEwp"
+1542791345954	Marionette	INFO	Listening on port 64663
+1542791346028	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791348451	Marionette	INFO	Listening on port 64718
+1542791348874	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791350207	Marionette	INFO	Listening on port 64722
+1542791350369	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791350962	Marionette	INFO	Listening on port 64879
+1542791351147	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791351593	Marionette	INFO	Listening on port 64869
+1542791351696	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791351955	Marionette	INFO	Listening on port 64815
+1542791352039	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791352717	Marionette	INFO	Listening on port 64816
+1542791353227	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791440892	Marionette	INFO	Stopped listening on port 64879
+1542791443242	Marionette	INFO	Stopped listening on port 64722
+1542791444268	Marionette	INFO	Stopped listening on port 64816
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x160011,name=PBackgroundStorage::Msg_Observe) Channel error: cannot send/recv
+
+[Parent 32835, Gecko_IOThread] WARNING: pipe error: Broken pipe: file /builds/worker/workspace/build/src/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 729
+1542791445030	Marionette	INFO	Stopped listening on port 64815
+1542791445817	Marionette	INFO	Stopped listening on port 64869
+1542791446401	Marionette	INFO	Stopped listening on port 64718
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1542791447049	Marionette	INFO	Stopped listening on port 64663
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1542791447635	Marionette	INFO	Stopped listening on port 64497
+1542791448261	Marionette	INFO	Stopped listening on port 64498
+1542791448846	Marionette	INFO	Stopped listening on port 64496
+1542791572421	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.aDm0TKiyby76"
+1542791572421	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.8MquP05TX1GU"
+1542791572436	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.7zpT0CWihNAi"
+1542791573413	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.HfSpISdqy9uL"
+1542791573417	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.faKtrPOx4Djt"
+1542791576887	Marionette	INFO	Listening on port 49517
+1542791577045	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791577512	Marionette	INFO	Listening on port 49520
+1542791577513	Marionette	INFO	Listening on port 49516
+1542791577561	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791577565	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791580132	Marionette	INFO	Listening on port 49564
+1542791580197	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791580566	Marionette	INFO	Listening on port 49566
+1542791580698	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791590949	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.LCzm0v74uwZk"
+1542791590951	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.bongfDuHYbRQ"
+1542791593378	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.eVeK7PQxbpQK"
+1542791593771	Marionette	INFO	Listening on port 49933
+1542791593906	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791594179	Marionette	INFO	Listening on port 49932
+1542791594300	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791594381	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.yH7FjKHYwDv2"
+1542791594777	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.B4FMiRUMuv4u"
+console.error: BroadcastService: 
+  receivedBroadcastMessage: handler for
+  remote-settings/monitor_changes
+  threw error:
+  Message: Error: Polling for changes failed: NetworkError when attempting to fetch resource..
+  Stack:
+    remoteSettingsFunction/remoteSettings.pollChanges@resource://services-settings/remote-settings.js:721:13
+
+console.error: BroadcastService: 
+console.error: BroadcastService: 
+  receivedBroadcastMessage: handler for
+  remote-settings/monitor_changes
+  threw error:
+  Message: Error: Polling for changes failed: NetworkError when attempting to fetch resource..
+  Stack:
+    remoteSettingsFunction/remoteSettings.pollChanges@resource://services-settings/remote-settings.js:721:13
+
+  receivedBroadcastMessage: handler for
+  remote-settings/monitor_changes
+  threw error:
+  Message: Error: Polling for changes failed: NetworkError when attempting to fetch resource..
+  Stack:
+    remoteSettingsFunction/remoteSettings.pollChanges@resource://services-settings/remote-settings.js:721:13
+
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[Child 33995, Chrome_ChildThread] WARNING: pipe error: Broken pipe: file /builds/worker/workspace/build/src/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 729
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[Child 33992, Chrome_ChildThread] WARNING: pipe error: Broken pipe: file /builds/worker/workspace/build/src/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 729
+[Child 33988, Chrome_ChildThread] WARNING: pipe error: Broken pipe: file /builds/worker/workspace/build/src/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 729
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+1542791603296	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.CHFCb7j2uilU"
+1542791604288	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.HK0Re1rEb47J"
+1542791605314	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.PyuHavOCfSW8"
+1542791605663	Marionette	INFO	Listening on port 50271
+1542791605716	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791606285	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.qXuMY1RLQQm0"
+1542791607277	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.8dtTXwInZOHg"
+1542791608931	Marionette	INFO	Listening on port 50290
+1542791609083	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791611954	Marionette	INFO	Listening on port 50326
+1542791612098	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791614292	Marionette	INFO	Listening on port 50368
+1542791614542	Marionette	WARN	TLS certificate errors will be ignored for this session
+1542791616060	Marionette	INFO	Listening on port 50417
+1542791616224	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource:///actors/PageStyleChild.jsm, line 17: TypeError: mm is null
+1542791621255	Marionette	INFO	Stopped listening on port 50271
+1542791622201	Marionette	INFO	Stopped listening on port 50290
+1542791624159	Marionette	INFO	Stopped listening on port 50326
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1542791625597	Marionette	INFO	Stopped listening on port 50368
+1542791627061	Marionette	INFO	Stopped listening on port 50417
