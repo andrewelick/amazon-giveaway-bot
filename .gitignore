@@ -2,3 +2,7 @@
 geckodriver.log
 run_log*
 input.txt
+bin
+include
+lib
+local
