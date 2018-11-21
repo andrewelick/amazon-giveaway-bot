@@ -12,6 +12,8 @@ from random import randint
 import concurrent.futures
 
 thread_count = 5
+max_page_count = 30
+current_page_number = 0
 
 def async_get_page_url(amazon_url):
     return_items = []
@@ -26,6 +28,7 @@ def async_get_page_url(amazon_url):
         for items in giveaway_list:
             giveaway_items = items.find('a')['href']
             return_items.append(giveaway_items)
+        print ("Successful retrieved items from "+amazon_url)
         return return_items
     except Exception as e:
         print ("Could not retrieve prizes from "+amazon_url)
@@ -197,12 +200,15 @@ def enter_contest(email, password, name):
     page_count = 1
     url_list = []
 
+    global current_page_number
+
     #Retrieves each page URL up to the page_count
-    while page_count < 30:
-        page_number = str(page_count)
+    while page_count < max_page_count:
+        page_number = str(current_page_number+page_count)
         amazon_url = "https://www.amazon.com/ga/giveaways?pageId="+page_number
         url_list.append(amazon_url)
         page_count += 1
+    current_page_number += page_count
 
     #Goes to each Page URL and gathers all the prize URLs and puts them into the list item_urls_list
     item_urls_list = gather_page_urls(url_list)
