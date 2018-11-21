@@ -8365,3 +8365,7 @@ JavaScript error: resource://gre/modules/WebProgressChild.jsm, line 58: TypeErro
 [GFX1-]: Receive IPC close with reason=AbnormalShutdown
 [Child 23267, Chrome_ChildThread] WARNING: pipe error: Broken pipe: file /builds/worker/workspace/build/src/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 729
 [GFX1-]: Receive IPC close with reason=AbnormalShutdown
+1542790565737	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-foreground" "-no-remote" "-profile" "/var/folders/j2/xx_2m7gj6rn_9v4st2wmxtsw0000gn/T/rust_mozprofile.NU82gvLvbtuY"
+1542790568183	Marionette	INFO	Listening on port 61953
+1542790568219	Marionette	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown

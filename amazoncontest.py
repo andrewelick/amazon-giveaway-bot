@@ -12,7 +12,7 @@ import asyncio
 
 async def async_get_page_url(amazon_url):
     print (amazon_url)
-    items = []
+    return_items = []
     try:
         response = get(amazon_url)
         amazon_soup = BeautifulSoup(response.text, 'html.parser')
@@ -23,13 +23,13 @@ async def async_get_page_url(amazon_url):
 
         for items in giveaway_list:
             giveaway_items = items.find('a')['href']
-            items.append(giveaway_items)
+            return_items.append(giveaway_items)
 
-        print(len(items))
-        return items
+        print(len(return_items))
+        return return_items
     except:
         print ("Could not retrieve prizes from "+amazon_url)
-        return items
+        return return_items
 
 async def gather_page_urls(url_list):
 
@@ -84,7 +84,7 @@ async def enter_contest(email, password, name):
 
         #Open Firefox with the current url for the item
         try:
-            browser = webdriver.Firefox()
+            browser = webdriver.Firefox(executable_path=os.path.join(os.path.dirname('/Users/mdobro/Code/amazon-giveaway-bot/'), 'geckodriver'))
             browser.get((link))
         except:
             print ("Could not load page")
