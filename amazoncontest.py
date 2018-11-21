@@ -8,10 +8,42 @@ from bs4 import BeautifulSoup
 from requests import get
 import time
 from random import randint
+import asyncio
 
+async def async_get_page_url(amazon_url):
+    print (amazon_url)
+    items = []
+    try:
+        response = get(amazon_url)
+        amazon_soup = BeautifulSoup(response.text, 'html.parser')
+        type(amazon_soup)
+
+        giveaway_container = amazon_soup.find("div", id='giveaway-grid')
+        giveaway_list = giveaway_container.findChildren('div', class_='giveawayItemContainer')
+
+        for items in giveaway_list:
+            giveaway_items = items.find('a')['href']
+            items.append(giveaway_items)
+
+        print(len(items))
+        return items
+    except:
+        print ("Could not retrieve prizes from "+amazon_url)
+        return items
+
+async def gather_page_urls(url_list):
+
+    #All the URLS for each item
+    item_urls_list = []
+
+    for amazon_url in url_list:
+        item_urls_list.append(async_get_page_url(amazon_url))
+
+    l = await asyncio.gather(*item_urls_list)
+    return [item for sublist in l for item in sublist]
 
 #Script the opens amazon, enters user information, and enters in every contest
-def enter_contest(email, password, name):
+async def enter_contest(email, password, name):
 
     #Amazon user login information
     user_email = email
@@ -29,34 +61,9 @@ def enter_contest(email, password, name):
         url_list.append(amazon_url)
         page_count += 1
 
-        #Wait some time between each page
-        random_time = randint(1, 3)
-        time.sleep(random_time)
-
-    #All the URLS for each item
-    item_urls_list = []
-
     #Goes to each Page URL and gathers all the prize URLs and puts them into the list item_urls_list
-    for amazon_url in url_list:
-
-        try:
-            response = get(amazon_url)
-            amazon_soup = BeautifulSoup(response.text, 'html.parser')
-            type(amazon_soup)
-
-            giveaway_container = amazon_soup.find("div", id='giveaway-grid')
-            giveaway_list = giveaway_container.findChildren('div', class_='giveawayItemContainer')
-
-            for items in giveaway_list:
-                giveaway_items = items.find('a')['href']
-                item_urls_list.append(giveaway_items)
-        except:
-            print ("Could not retrieve prizes from "+amazon_url)
-            continue
-
-        #Wait some time
-        random_time = randint(1,3)
-        time.sleep(3)
+    item_urls_list = await gather_page_urls(url_list)
+    print (len(item_urls_list))
 
     #Print message that Firefox will be opening now
     print ("")
@@ -77,7 +84,7 @@ def enter_contest(email, password, name):
 
         #Open Firefox with the current url for the item
         try:
-            browser = webdriver.Firefox(executable_path=os.path.join(os.path.dirname('/Users/mdobro/Code/amazon-giveaway-bot/'), 'geckodriver'))
+            browser = webdriver.Firefox()
             browser.get((link))
         except:
             print ("Could not load page")
@@ -192,7 +199,7 @@ def enter_contest(email, password, name):
             print ('You did not win :/')
             #Close the firefox window
 
-        browser.quit()
+        #browser.quit()
         print ("")
 
     #Starts the script over once it completes the last item
@@ -226,7 +233,7 @@ def check_connection():
 
 
 #Loads the email and password questions
-def load_login_info():
+async def load_login_info():
     print ("Please enter in your Amazon account information to begin")
     email = input("Email: ")
     password = input("Password: ")
@@ -241,7 +248,7 @@ def load_login_info():
             #Running text
             print ("Loading script data, may take up to 10 minutes. Sit back and enjoy the prizes!")
             #Run the script
-            enter_contest(email, password, name)
+            await enter_contest(email, password, name)
     else:
         print ("")
         load_login_info()
@@ -261,4 +268,4 @@ while check_connection() is False:
 else:
     print ("Connected!")
     print ("")
-    load_login_info()
+    asyncio.run(load_login_info())
