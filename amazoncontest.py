@@ -15,6 +15,7 @@ loading_thread_count = 5
 thread_count = 5
 max_page_count = 30
 current_page_number = 0
+rescan_same_pages_on_completion = True
 
 def async_get_page_url(amazon_url):
     #Waits some time
@@ -207,7 +208,9 @@ def enter_contest(email, password, name):
     url_list = []
 
     global current_page_number
-
+    if (rescan_same_pages_on_completion):
+        current_page_number = 0
+        
     #Retrieves each page URL up to the page_count
     while page_count < max_page_count:
         page_number = str(current_page_number+page_count)
