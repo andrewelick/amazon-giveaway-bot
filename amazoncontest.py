@@ -11,7 +11,7 @@ import time
 from random import randint
 import concurrent.futures
 
-thread_count = 10
+thread_count = 5
 
 def async_get_page_url(amazon_url):
     return_items = []
