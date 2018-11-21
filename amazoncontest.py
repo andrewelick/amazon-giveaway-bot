@@ -46,6 +46,11 @@ async def gather_page_urls(url_list):
     l = await asyncio.gather(*item_urls_list)
     return [item for sublist in l for item in sublist]
 
+def write_to_log(txt):
+    print(txt)
+    with open('run_log', 'a') as f:
+        f.write(txt + '\n')
+
 def run(item_number, link, user_email, user_password, first_name):
     #Print the item number
     output_string = "\n"
@@ -60,6 +65,9 @@ def run(item_number, link, user_email, user_password, first_name):
         browser.get((link))
     except:
         output_string += "\n" + "Could not load page"
+        browser.quit()
+        write_to_log ( output_string )
+        return
 
     #Wait some time
     random_time = randint(1,3)
@@ -73,11 +81,10 @@ def run(item_number, link, user_email, user_password, first_name):
         random_time = randint(2,3)
         time.sleep(random_time)
         login_button = browser.find_element_by_id('signInSubmit').click()
-    except Exception as e:
-        print (e)
+    except:
         output_string += "\n" + "Contest has ended, continuing onward"
         browser.quit()
-        print (output_string)
+        write_to_log (output_string)
         return
 
 
@@ -112,7 +119,7 @@ def run(item_number, link, user_email, user_password, first_name):
             click_video = False
             output_string += "\n" + "Amazon video failed"
             browser.quit()
-            print (output_string)
+            write_to_log (output_string)
             return
 
     elif youtube_video != False:
@@ -125,7 +132,7 @@ def run(item_number, link, user_email, user_password, first_name):
         except:
             output_string += "\n" + "Youtube video script failed"
             browser.quit()
-            print (output_string)
+            write_to_log (output_string)
             return
     else:
         try:
@@ -142,7 +149,7 @@ def run(item_number, link, user_email, user_password, first_name):
         else:
             output_string += "\n" + "Already Entered"
             browser.quit()
-            print (output_string)
+            write_to_log (output_string)
             return
 
     #Wait some time
@@ -175,7 +182,7 @@ def run(item_number, link, user_email, user_password, first_name):
         #Close the firefox window
 
     browser.quit()
-    print (output_string)
+    write_to_log (output_string)
 
 #Script the opens amazon, enters user information, and enters in every contest
 async def enter_contest(email, password, name):

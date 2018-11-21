@@ -1,3 +1,4 @@
 .vscode
 geckodriver.log
 run_log*
+input.txt
