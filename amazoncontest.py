@@ -9,13 +9,11 @@ from bs4 import BeautifulSoup
 from requests import get
 import time
 from random import randint
-import asyncio
 import concurrent.futures
 
-thread_count = 5
+thread_count = 10
 
-async def async_get_page_url(amazon_url):
-    print (amazon_url)
+def async_get_page_url(amazon_url):
     return_items = []
     try:
         response = get(amazon_url)
@@ -28,23 +26,26 @@ async def async_get_page_url(amazon_url):
         for items in giveaway_list:
             giveaway_items = items.find('a')['href']
             return_items.append(giveaway_items)
-
-        print(len(return_items))
         return return_items
-    except:
+    except Exception as e:
         print ("Could not retrieve prizes from "+amazon_url)
         return return_items
 
-async def gather_page_urls(url_list):
-
+def gather_page_urls(url_list):
     #All the URLS for each item
     item_urls_list = []
 
-    for amazon_url in url_list:
-        item_urls_list.append(async_get_page_url(amazon_url))
+    print ("\nLoading script data...")
 
-    l = await asyncio.gather(*item_urls_list)
-    return [item for sublist in l for item in sublist]
+    executor = concurrent.futures.ThreadPoolExecutor(thread_count)
+    
+    futures = []
+    for amazon_url in url_list:
+        future = executor.submit(async_get_page_url, amazon_url)
+        futures.append(future)
+    concurrent.futures.wait(futures)
+    item_urls_list = [future.result() for future in futures]
+    return [item for sublist in item_urls_list for item in sublist]
 
 def write_to_log(txt):
     print(txt)
@@ -185,7 +186,7 @@ def run(item_number, link, user_email, user_password, first_name):
     write_to_log (output_string)
 
 #Script the opens amazon, enters user information, and enters in every contest
-async def enter_contest(email, password, name):
+def enter_contest(email, password, name):
 
     #Amazon user login information
     user_email = email
@@ -204,12 +205,9 @@ async def enter_contest(email, password, name):
         page_count += 1
 
     #Goes to each Page URL and gathers all the prize URLs and puts them into the list item_urls_list
-    item_urls_list = await gather_page_urls(url_list)
-    print (len(item_urls_list))
+    item_urls_list = gather_page_urls(url_list)
 
-    #Print message that Firefox will be opening now
-    print ("")
-    print ("100% of data loaded, running script")
+    print("Done! Sit back and enjoy the prizes!")
 
     if item_urls_list == "":
         enter_contest(email, password, name)
@@ -253,8 +251,7 @@ def check_connection():
 
 
 
-#Loads the email and password questions
-async def load_login_info():
+#Loads the email and password questionsdef load_login_info():
     print ("Please enter in your Amazon account information to begin")
     email = input("Email: ")
     password = input("Password: ")
@@ -266,10 +263,8 @@ async def load_login_info():
     correct_info = correct_info.lower()
 
     if correct_info == "yes":
-            #Running text
-            print ("Loading script data, may take up to 10 minutes. Sit back and enjoy the prizes!")
             #Run the script
-            await enter_contest(email, password, name)
+            enter_contest(email, password, name)
     else:
         print ("")
         load_login_info()
@@ -289,4 +284,4 @@ while check_connection() is False:
 else:
     print ("Connected!")
     print ("")
-    asyncio.run(load_login_info())
+    load_login_info()
