@@ -4,6 +4,7 @@ from tkinter import *
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.firefox.options import Options
 from bs4 import BeautifulSoup
 from requests import get
 import time
@@ -11,7 +12,7 @@ from random import randint
 import asyncio
 import concurrent.futures
 
-thread_count = 1
+thread_count = 5
 
 async def async_get_page_url(amazon_url):
     print (amazon_url)
@@ -53,7 +54,9 @@ def run(item_number, link, user_email, user_password, first_name):
 
     #Open Firefox with the current url for the item
     try:
-        browser = webdriver.Firefox(executable_path=os.path.join(os.path.dirname('/Users/mdobro/Code/amazon-giveaway-bot/'), 'geckodriver'))
+        options = Options()
+        options.headless = True
+        browser = webdriver.Firefox(options=options, executable_path=os.path.join(os.path.dirname('/Users/mdobro/Code/amazon-giveaway-bot/'), 'geckodriver'))
         browser.get((link))
     except:
         output_string += "\n" + "Could not load page"
@@ -142,9 +145,9 @@ def run(item_number, link, user_email, user_password, first_name):
             print (output_string)
             return
 
-        #Wait some time
-        random_time = randint(14, 15)
-        time.sleep(random_time)
+    #Wait some time
+    random_time = randint(14, 15)
+    time.sleep(random_time)
 
     did_you_win = ""
     try:
