@@ -72,12 +72,12 @@ def enter_contest(email, password, name):
     for link in item_urls_list:
 
         #Print the item number
-        print ("Item #"+str(item_number))
+        print ("Item #"+str(item_number)+": "+link)
         item_number += 1
 
         #Open Firefox with the current url for the item
         try:
-            browser = webdriver.Firefox(executable_path=os.path.join(os.path.dirname(sys.argv[0]), 'geckodriver.exe'))
+            browser = webdriver.Firefox(executable_path=os.path.join(os.path.dirname('/Users/mdobro/Code/amazon-giveaway-bot/'), 'geckodriver'))
             browser.get((link))
         except:
             print ("Could not load page")
@@ -159,7 +159,7 @@ def enter_contest(email, password, name):
         #Wait some time if item has not been played yet
         if enter_contest is False:
             #Wait some time
-            random_time = randint(12, 15)
+            random_time = randint(14, 15)
             time.sleep(random_time)
 
         else:
@@ -167,6 +167,7 @@ def enter_contest(email, password, name):
             random_time = randint(2,3)
             time.sleep(random_time)
 
+        did_you_win = ""
         try:
             did_you_win = browser.find_element_by_id('title')
             did_you_win = did_you_win.text
@@ -175,17 +176,18 @@ def enter_contest(email, password, name):
             print ("Could not find winning status")
 
         #Check if you won the prize
-        if did_you_win != first_name+", you didn't win":
+        if did_you_win == first_name+", you won!":
             print ("You've won!")
-
             try:
                 claim_prize = browser.find_element_by_name('ShipMyPrize')
                 claim_prize.click()
             except:
-                return
+                console.log('Error finding ship button')
 
             random_time = randint(2,4)
             time.sleep(random_time)
+        elif did_you_win == first_name+", your entry has been received":
+            print ('This contest will select a winner later. If you won, you will notified via email.')
         else:
             print ('You did not win :/')
             #Close the firefox window
