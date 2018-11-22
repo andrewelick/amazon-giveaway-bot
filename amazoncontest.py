@@ -10,12 +10,29 @@ from requests import get
 import time
 from random import randint
 import concurrent.futures
+import pickle
+
+USED_URL_FILE_NAME='entered_giveaways'
 
 loading_thread_count = 5
 thread_count = 5
-max_page_count = 30
+max_page_count = 1
 current_page_number = 0
-rescan_same_pages_on_completion = True
+rescan_same_pages_on_completion = False
+
+def get_intersection(first_list, second_list):
+    in_first = set(first_list)
+    in_second = set(second_list)
+
+    in_second_but_not_in_first = in_second - in_first
+
+    return first_list + list(in_second_but_not_in_first)
+
+def remove_second_list_from_first(first_list, second_list):
+    in_first = set(first_list)
+    in_second = set(second_list)
+
+    return in_first - in_second
 
 def async_get_page_url(amazon_url):
     #Waits some time
@@ -55,12 +72,29 @@ def gather_page_urls(url_list):
         futures.append(future)
     concurrent.futures.wait(futures)
     item_urls_list = [future.result() for future in futures]
-    return [item for sublist in item_urls_list for item in sublist]
+    # future.result() returns an array, list needs to be flattened
+    flat_item_urls_list = [item for sublist in item_urls_list for item in sublist]
+    # remove saved used_urls and return list
+    filtered_list = []
+    with open(USED_URL_FILE_NAME, 'rb') as used_urls_file:
+        all_used_urls = pickle.load(used_urls_file)
+        print(all_used_urls)
+        filtered_list = remove_second_list_from_first(flat_item_urls_list, all_used_urls)
+        used_urls_file.close()
+    return filtered_list
 
 def write_to_log(txt):
     print(txt)
     with open('run_log', 'a') as f:
         f.write(txt + '\n')
+
+def write_to_entered_giveaways(url):
+    #Write all used urls to disk
+    print("writing to entered_giveaways")
+    all_used_urls = []
+    all_used_urls = get_intersection([url], pickle.load(open(USED_URL_FILE_NAME, 'rb')))
+    pickle.dump(all_used_urls, open(USED_URL_FILE_NAME, 'wb'))
+    print(pickle.load(open(USED_URL_FILE_NAME, 'rb')))
 
 def run(item_number, link, user_email, user_password, first_name):
     #Print the item number
@@ -78,6 +112,7 @@ def run(item_number, link, user_email, user_password, first_name):
         output_string += "\n" + "Could not load page"
         browser.quit()
         write_to_log ( output_string )
+        write_to_entered_giveaways(link)
         return
 
     #Wait some time
@@ -96,6 +131,7 @@ def run(item_number, link, user_email, user_password, first_name):
         output_string += "\n" + "Contest has ended, continuing onward"
         browser.quit()
         write_to_log (output_string)
+        write_to_entered_giveaways(link)
         return
 
 
@@ -131,6 +167,7 @@ def run(item_number, link, user_email, user_password, first_name):
             output_string += "\n" + "Amazon video failed"
             browser.quit()
             write_to_log (output_string)
+            write_to_entered_giveaways(link)
             return
 
     elif youtube_video != False:
@@ -144,6 +181,7 @@ def run(item_number, link, user_email, user_password, first_name):
             output_string += "\n" + "Youtube video script failed"
             browser.quit()
             write_to_log (output_string)
+            write_to_entered_giveaways(link)
             return
     else:
         try:
@@ -161,6 +199,7 @@ def run(item_number, link, user_email, user_password, first_name):
             output_string += "\n" + "Already Entered"
             browser.quit()
             write_to_log (output_string)
+            write_to_entered_giveaways(link)
             return
 
     #Wait some time
@@ -194,6 +233,7 @@ def run(item_number, link, user_email, user_password, first_name):
 
     browser.quit()
     write_to_log (output_string)
+    write_to_entered_giveaways(link)
 
 #Script the opens amazon, enters user information, and enters in every contest
 def enter_contest(email, password, name):
@@ -210,9 +250,9 @@ def enter_contest(email, password, name):
     global current_page_number
     if (rescan_same_pages_on_completion):
         current_page_number = 0
-        
+
     #Retrieves each page URL up to the page_count
-    while page_count < max_page_count:
+    while page_count <= max_page_count:
         page_number = str(current_page_number+page_count)
         amazon_url = "https://www.amazon.com/ga/giveaways?pageId="+page_number
         url_list.append(amazon_url)
@@ -221,6 +261,7 @@ def enter_contest(email, password, name):
 
     #Goes to each Page URL and gathers all the prize URLs and puts them into the list item_urls_list
     item_urls_list = gather_page_urls(url_list)
+    print ("Items to check: "+str(len(item_urls_list)))
 
     print("Done! Sit back and enjoy the prizes!")
 
@@ -230,11 +271,14 @@ def enter_contest(email, password, name):
     executor = concurrent.futures.ProcessPoolExecutor(thread_count)
     
     futures = []
+    used_urls = []
     for index, link in enumerate(item_urls_list):
         #Wait some time
-        random_time = randint(2,3)
-        time.sleep(random_time)
-        futures.append(executor.submit(run, index, link, user_email, user_password, first_name))
+        random_time = randint(2,3) #TODO: make sleep into a function
+        time.sleep(random_time) 
+        runFuture = executor.submit(run, index, link, user_email, user_password, first_name)
+        futures.append(runFuture)
+        used_urls.append(runFuture.result())
     concurrent.futures.wait(futures)
 
     #Starts the script over once it completes the last item
