@@ -1,9 +1,9 @@
 import os.path
 import sys
-from tkinter import *
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.firefox.options import Options
 from bs4 import BeautifulSoup
 from requests import get
 import time
@@ -22,8 +22,8 @@ def enter_contest(email, password, name):
     page_count = 1
     url_list = []
 
-    #Retrieves each page URL up to the page_count
-    while page_count < 30:
+    #Retrieves each giveaway page URL and inputs it into a list
+    while page_count < 60:
         page_number = str(page_count)
         amazon_url = "https://www.amazon.com/ga/giveaways?pageId="+page_number
         url_list.append(amazon_url)
@@ -52,7 +52,6 @@ def enter_contest(email, password, name):
                 item_urls_list.append(giveaway_items)
         except:
             print ("Could not retrieve prizes from "+amazon_url)
-            continue
 
         #Wait some time
         random_time = randint(1,3)
@@ -61,9 +60,7 @@ def enter_contest(email, password, name):
     #Print message that Firefox will be opening now
     print ("")
     print ("100% of data loaded, running script")
-
-    if item_urls_list == "":
-        enter_contest(email, password, name)
+    print ("")
 
     #Individual item number, used to select the next item in the list
     item_number = 1
@@ -71,141 +68,173 @@ def enter_contest(email, password, name):
     #Runs through each item in the list
     for link in item_urls_list:
 
-        #Print the item number
-        print ("Item #"+str(item_number))
-        item_number += 1
-
         #Open Firefox with the current url for the item
         try:
-            browser = webdriver.Firefox(executable_path=os.path.join(os.path.dirname(sys.argv[0]), 'geckodriver.exe'))
+            options = Options()
+            options.headless = True
+            browser = webdriver.Firefox(options=options, executable_path=os.path.join(os.path.dirname(sys.argv[0]), 'geckodriver.exe'))
             browser.get((link))
+            item_page_loaded = True
         except:
-            print ("Could not load page")
+            item_page_loaded = False
 
-        #Wait some time
-        random_time = randint(1,3)
-        time.sleep(random_time)
-
-        #Find Email and password boxes and log in to account and clicks the Sign in button
-        try:
-            login_email = browser.find_element_by_id('ap_email').send_keys(user_email)
-            login_password = browser.find_element_by_id('ap_password').send_keys(user_password)
+        if item_page_loaded is True:
             #Wait some time
-            random_time = randint(2,3)
+            random_time = randint(1,2)
             time.sleep(random_time)
-            login_button = browser.find_element_by_id('signInSubmit').click()
-        except:
-            print ("Contest has ended, continuing onward")
 
-        #Waits some time
-        random_time = randint(1,3)
-        time.sleep(random_time)
+            #Print the item number
+            print ("Item #"+str(item_number))
+            item_number += 1
 
-        #Looks for videos on page, waits time if videos, clicks prize box
-        #Find Amazon video on page
-        try:
-            amazon_video = browser.find_element_by_id("enter-video-button-announce")
-        except:
-            amazon_video = False
-
-        #Find Youtube video on page
-        try:
-            youtube_video = browser.find_element_by_id("videoSubmitForm")
-        except:
-            youtube_video = False
-
-        #If video is on the page either click the video and wait or just wait, else, click the giveaway box
-        if amazon_video != False:
-            enter_contest = False
+            #Find Email and password boxes and log in to account and clicks the Sign in button
             try:
-                click_video = browser.find_element_by_id("airy-outer-container")
-                click_video.click()
-                print ("Waiting 15 seconds for amazon video")
+                login_email = browser.find_element_by_id('ap_email').send_keys(user_email)
+                login_password = browser.find_element_by_id('ap_password').send_keys(user_password)
                 #Wait some time
-                random_time = randint(16, 18)
+                random_time = randint(2,3)
                 time.sleep(random_time)
-                continue_button = browser.find_element_by_name('continue').click()
+                login_button = browser.find_element_by_id('signInSubmit').click()
             except:
-                click_video = False
-                print ("Amazon video failed")
+                print ("Contest has ended")
 
-        elif youtube_video != False:
-            enter_contest = False
-            try:
-                print ("Waiting 15 seconds for youtube video")
-                #Wait some time
-                random_time = randint(16,18)
-                time.sleep(random_time)
-                continue_button = browser.find_element_by_name('continue').click()
-            except:
-                print ("Youtube video script failed")
-        else:
-            try:
-                click_to_win = browser.find_element_by_id('box_click_target')
-            except:
-                click_to_win = False
+            #Waits some time
+            random_time = randint(1,2)
+            time.sleep(random_time)
 
-            if click_to_win != False:
-                print ("Entered the contest")
+            #Find item name and price
+            try:
+                giveaway_item_name = browser.find_element_by_id("prize-name")
+                giveaway_item_price = browser.find_element_by_class_name("qa-prize-cost-value")
+                print (giveaway_item_name.text+"-" +giveaway_item_price.text)
+            except:
+                print ("Could not find item name")
+
+            #Looks for videos on page, waits time if videos, clicks prize box
+            #Find Amazon video on page
+            try:
+                amazon_video = browser.find_element_by_id("enter-video-button-announce")
+            except:
+                amazon_video = False
+
+            #Find Youtube video on page
+            try:
+                youtube_video = browser.find_element_by_id("videoSubmitForm")
+            except:
+                youtube_video = False
+
+            #If video is on the page either click the video and wait or just wait, else, click the giveaway box
+            if amazon_video != False:
+
+                #Did not enter in the contest
                 enter_contest = False
-                #Wait some time
-                random_time = randint(2,4)
-                time.sleep(random_time)
-                click_to_win.click()
+
+                try:
+                    click_video = browser.find_element_by_id("airy-outer-container")
+                    click_video.click()
+                    print ("Waiting 15 seconds for amazon video")
+                    #Wait some time
+                    random_time = randint(16, 18)
+                    time.sleep(random_time)
+                    continue_button = browser.find_element_by_name('continue').click()
+                except:
+                    click_video = False
+                    print ("Amazon video failed")
+
+            elif youtube_video != False:
+
+                #Did not enter in the contest
+                enter_contest = False
+
+                try:
+                    print ("Waiting 15 seconds for youtube video")
+                    #Wait some time
+                    random_time = randint(16,18)
+                    time.sleep(random_time)
+                    continue_button = browser.find_element_by_name('continue').click()
+                except:
+                    print ("Youtube video script failed")
             else:
-                print ("Already Entered")
-                enter_contest = True
+                try:
+                    #Find animated contest box to click on
+                    click_to_win = browser.find_element_by_id('box_click_target')
+                except:
+                    #Could not find the animated box
+                    click_to_win = False
 
-        #Wait some time if item has not been played yet
-        if enter_contest is False:
-            #Wait some time
-            random_time = randint(12, 15)
-            time.sleep(random_time)
+                if click_to_win != False:
+                    print ("Entered the contest")
+                    enter_contest = False
+                    #Wait some time
+                    random_time = randint(2,4)
+                    time.sleep(random_time)
+                    try:
+                        click_to_win.click()
+                    except:
+                        print ("Could not click bouncing box")
+                else:
+                    print ("Already Entered")
+                    enter_contest = True
 
-        else:
-            #Wait some time
-            random_time = randint(2,3)
-            time.sleep(random_time)
+            #Wait some time if item has not been played yet
+            if enter_contest is False:
 
-        try:
-            did_you_win = browser.find_element_by_id('title')
-            did_you_win = did_you_win.text
-            did_you_win = did_you_win.lower()
-        except:
-            print ("Could not find winning status")
+                #Wait some time
+                random_time = randint(12, 15)
+                time.sleep(random_time)
 
-        #Check if you won the prize
-        if did_you_win != first_name+", you didn't win":
-            print ("You've won!")
+            else:
+                #Wait some time
+                random_time = randint(2,3)
+                time.sleep(random_time)
 
             try:
-                claim_prize = browser.find_element_by_name('ShipMyPrize')
-                claim_prize.click()
+                #Look for heading text telling you if you have won the prize or not
+                did_you_win = browser.find_element_by_id('title')
+                did_you_win = did_you_win.text
+                did_you_win = did_you_win.lower()
             except:
-                return
+                print ("Could not find winning status")
 
-            random_time = randint(2,4)
-            time.sleep(random_time)
+            #Check if you won the prize
+            if did_you_win != first_name+", you didn't win":
+
+                #Check to see if placed an entry into raffle, if not try to enter into contest
+                if did_you_win == first_name+", your entry has been received":
+                    print ("Already entered into raffle giveaway")
+                else:
+                    print ("You've won!")
+
+                    try:
+                        #Look for claim item button and click it
+                        claim_prize = browser.find_element_by_name('ShipMyPrize')
+                        claim_prize.click()
+                    except:
+                        #Tell user they won the prize
+                        print ("You have already won this prize!")
+
+                    random_time = randint(2,4)
+                    time.sleep(random_time)
+            else:
+                print ('You did not win :/')
+
+            #Close the window
+            browser.quit()
         else:
-            print ('You did not win :/')
-            #Close the firefox window
+            #Print error and close the browser
+            print ("Could not load page")
+            browser.quit()
 
-        browser.quit()
         print ("")
 
     #Starts the script over once it completes the last item
-    repeat_script(user_email, user_password, first_name)
+    repeat_script(email, password, name)
 
 
 
 #Restarts the script after it finishes
-def repeat_script(user_email, user_password, first_name):
-    email = user_email
-    password = user_password
-    name = first_name
-
+def repeat_script(email, password, name):
     enter_contest(email, password, name)
-
 
 
 #Check for internet connection
