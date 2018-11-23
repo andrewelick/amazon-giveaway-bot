@@ -19,26 +19,29 @@ def enter_contest(email, password, name):
     first_name= name
 
     #Pages to index to retrieve items
-    page_count = 1
+    page_count = 2
+    total_count = 150
     url_list = []
 
     #Retrieves each giveaway page URL and inputs it into a list
-    while page_count < 60:
+    while page_count <= total_count:
         page_number = str(page_count)
         amazon_url = "https://www.amazon.com/ga/giveaways?pageId="+page_number
         url_list.append(amazon_url)
         page_count += 1
 
-        #Wait some time between each page
-        random_time = randint(1, 3)
-        time.sleep(random_time)
-
     #All the URLS for each item
     item_urls_list = []
+
+    #Vars for loading progress
+    list_count = len(url_list)
+    count_percentage = 100 / list_count
+    count1 = 1
 
     #Goes to each Page URL and gathers all the prize URLs and puts them into the list item_urls_list
     for amazon_url in url_list:
 
+        #Load each prize url into the list to be used
         try:
             response = get(amazon_url)
             amazon_soup = BeautifulSoup(response.text, 'html.parser')
@@ -53,14 +56,23 @@ def enter_contest(email, password, name):
         except:
             print ("Could not retrieve prizes from "+amazon_url)
 
+
+        #Show loading progress
+        percentage_done_loading = int(round(count1 * count_percentage))
+
+        if percentage_done_loading != 100:
+            print (str(percentage_done_loading)+"% completed...", end='\r')
+        else:
+            print ("100% complete, now running script", end='\r')
+            print ("")
+            print ("")
+
+        count1 += 1
+
         #Wait some time
         random_time = randint(1,3)
         time.sleep(3)
 
-    #Print message that Firefox will be opening now
-    print ("")
-    print ("100% of data loaded, running script")
-    print ("")
 
     #Individual item number, used to select the next item in the list
     item_number = 1
@@ -173,7 +185,7 @@ def enter_contest(email, password, name):
                     except:
                         print ("Could not click bouncing box")
                 else:
-                    print ("Already Entered")
+                    print ("Previously entered")
                     enter_contest = True
 
             #Wait some time if item has not been played yet
@@ -201,9 +213,9 @@ def enter_contest(email, password, name):
 
                 #Check to see if placed an entry into raffle, if not try to enter into contest
                 if did_you_win == first_name+", your entry has been received":
-                    print ("Already entered into raffle giveaway")
+                    print ("Entered into raffle giveaway")
                 else:
-                    print ("You've won!")
+                    print ("***WINNER!***")
 
                     try:
                         #Look for claim item button and click it
@@ -216,7 +228,7 @@ def enter_contest(email, password, name):
                     random_time = randint(2,4)
                     time.sleep(random_time)
             else:
-                print ('You did not win :/')
+                print ('-Not a winner-')
 
             #Close the window
             browser.quit()
@@ -265,10 +277,12 @@ def load_login_info():
     correct_info = correct_info.lower()
 
     if correct_info == "yes":
-            #Running text
-            print ("Loading script data, may take up to 10 minutes. Sit back and enjoy the prizes!")
-            #Run the script
-            enter_contest(email, password, name)
+
+        print ("")
+        print ("Loading prizes")
+
+        #Run the script
+        enter_contest(email, password, name)
     else:
         print ("")
         load_login_info()
@@ -282,7 +296,7 @@ print("")
 #Checks if internet connection is avaliable
 while check_connection() is False:
     #Tell user they need to have an internet connection before continuing
-    print ("Failed to retrive internet connection, attempting to connect to network in 5 seconds")
+    print ("Failed to retrive internet connection, attempting to connect to network in 5 seconds", end='\r')
     time.sleep(5)
     check_connection()
 else:
