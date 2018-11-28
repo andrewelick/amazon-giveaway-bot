@@ -14,14 +14,9 @@ from random import randint
 #Script the opens amazon, enters user information, and enters in every contest
 def skip_wait_time(email, password, name, want_follow):
 
-    #Amazon user login information
-    user_email = email
-    user_password = password
-    first_name= name
-
     #Pages to index to retrieve items, add giveaways urls list, loading percentage
     page_count = 1
-    total_count = 1
+    total_count = 10
     item_urls_list = []
     count_percentage = 100 / total_count
 
@@ -75,45 +70,47 @@ def skip_wait_time(email, password, name, want_follow):
         #Open Firefox with the current url for the item
         try:
             options = Options()
-            options.headless = False
-            browser = webdriver.Firefox(executable_path=os.path.join(os.path.dirname(sys.argv[0]), 'geckodriver.exe'), options=options)
+            options.headless = True #Currently on, turn off if you notice multiple prizes that are unreadable in a row, CAPTCHA could be enabled
+            profile = webdriver.FirefoxProfile('/Users/andye/AppData/Roaming/Mozilla/Firefox/Profiles/5ym8ukdl.amazon') #Add your own path, google create firefox profile
+            browser = webdriver.Firefox(firefox_profile=profile, executable_path=os.path.join(os.path.dirname(sys.argv[0]), 'geckodriver.exe'), options=options)
             browser.get((link))
             item_page_loaded = True
         except:
             item_page_loaded = False
 
-
+        #Run through the prize cycle if browser loads
         if item_page_loaded is True:
-            #Wait some time
-            random_time = randint(1,2)
-            time.sleep(random_time)
+            #Variable for sponsor follow giveaway and user does not want to enter
+            is_follow_no_want = False
 
             #Find Email and password boxes and log in to account and clicks the Sign in button
             try:
-                login_email = browser.find_element_by_id('ap_email').send_keys(user_email)
-                login_password = browser.find_element_by_id('ap_password').send_keys(user_password)
-                #Wait some time
+                login_email = browser.find_element_by_id('ap_email').send_keys(email)
+                login_password = browser.find_element_by_id('ap_password').send_keys(password)
                 random_time = randint(2,3)
                 time.sleep(random_time)
                 login_button = browser.find_element_by_id('signInSubmit').click()
-                contest_ended = False
+                print ("Logged in")
             except:
-                contest_ended = True
+                already_logged = True
 
             #Print the item number
             print ("Item #"+str(item_number))
             item_number += 1
 
-            #Variable for sponsor follow giveaway and user does not want to enter
-            is_follow_no_want = False
-
             #Find item name and price
             try:
-                giveaway_item_name = browser.find_element_by_id("prize-name")
-                giveaway_item_price = browser.find_element_by_class_name("qa-prize-cost-value")
-                print (giveaway_item_name.text+"-" +giveaway_item_price.text)
+                giveaway_item_name = browser.find_element_by_id("prize-name").text
+                giveaway_item_price = browser.find_element_by_class_name("qa-prize-cost-value").text
+                print (giveaway_item_name+"-" +giveaway_item_price)
             except:
                 print ("Could not find item name")
+
+            #Check if contest has already ended
+            try:
+                contest_ended = find_element_by_id('giveaway-ended-header')
+            except:
+                contest_ended = False
 
             #Check if contest has ended, if not continue
             if contest_ended is False:
@@ -150,8 +147,7 @@ def skip_wait_time(email, password, name, want_follow):
                     skip_wait_time = False
 
                     try:
-                        click_video = browser.find_element_by_id("airy-outer-container")
-                        click_video.click()
+                        click_video = browser.find_element_by_id("airy-outer-container").click()
                         print ("Waiting 15 seconds for amazon video")
                         random_time = randint(16, 18)
                         time.sleep(random_time)
@@ -166,7 +162,6 @@ def skip_wait_time(email, password, name, want_follow):
 
                     try:
                         print ("Waiting 15 seconds for youtube video")
-                        #Wait some time
                         random_time = randint(16,18)
                         time.sleep(random_time)
                         continue_button = browser.find_element_by_name('continue').click()
@@ -200,32 +195,26 @@ def skip_wait_time(email, password, name, want_follow):
                 else:
                     print ("Previously entered")
                     skip_wait_time = True
-                    random_time = randint(1,3)
-                    time.sleep(random_time)
 
                 #If entering giveaway and need time, wait
                 if skip_wait_time is False:
-                    #Wait some time
                     random_time = randint(12, 15)
                     time.sleep(random_time)
 
                 #If not a sponsor follow and user does not want, look for giveaway text
                 if is_follow_no_want is False:
                     try:
-                        giveaway_results_text = browser.find_element_by_id('title')
+                        giveaway_results_text = browser.find_element_by_id('title').text.lower()
                     except:
                         giveaway_results_text = False
 
                     #Check giveaway results and see if they are a winner
                     if giveaway_results_text != False:
-                        #Convert to text and lowercase it
-                        giveaway_results_text = giveaway_results_text.text
-                        giveaway_results_text = giveaway_results_text.lower()
 
                         #Check if you already lost
-                        if giveaway_results_text != first_name+", you didn't win":
+                        if giveaway_results_text != name+", you didn't win":
                             #Check to see if placed an entry into raffle, if not try to claim prize
-                            if giveaway_results_text != first_name+", your entry has been received":
+                            if giveaway_results_text != name+", your entry has been received":
                                 try:
                                     #Look for claim item button and click it
                                     claim_prize = browser.find_element_by_name('ShipMyPrize')
@@ -246,64 +235,48 @@ def skip_wait_time(email, password, name, want_follow):
                                 print ("Entered into raffle giveaway")
                         else:
                             print ('-Not a winner-')
-                            random_time = randint(1,2)
-                            time.sleep(random_time)
                     else:
                         print ("Could not find winning status")
-                        time.sleep(1)
-                browser.quit()
             else:
                 print ("Contest has already ended")
-                time.sleep(1)
-            browser.quit()
         else:
             print ("Could not load page")
-            time.sleep(1)
-            browser.quit()
 
+        #Wait some time before closing window
+        random_time = randint(1,3)
+        time.sleep(random_time)
+        browser.quit()
         print ("")
 
     #Starts the script over once it completes the last item
     repeat_script(email, password, name, want_follow)
 
-
-
 #Restarts the script after it finishes
 def repeat_script(email, password, name, want_follow):
     skip_wait_time(email, password, name, want_follow)
 
-
-#Check for internet connection
-def check_connection():
-    print ("Checking connection...")
-
-    test_url = "http://www.google.com"
-    timeout = 5
-    try:
-        #Ping the URL and tell user connected
-        response = get(test_url, timeout=timeout)
-
-    except:
-        return False
-
-
-
-#Loads the email and password questions
+#Loads the user input questions, email, password, follow, correct info
 def load_login_info():
     print ("Please enter in your Amazon account information to begin")
     email = input("Email: ")
     password = input("Password: ")
     name = input("First Name: ")
-    name = name.lower()
     want_follow = input("Do you want to enter follow sponsor contests? (Y/N): ")
-    want_follow = want_follow.lower()
-
-    #Asks user if information is correct
     correct_info = input("Is this information correct? (Y/N): ")
+
+    #Handle user inputs
+    name = name.lower()
+    want_follow = want_follow.lower()
     correct_info = correct_info.lower()
 
-    if correct_info == "yes" or correct_info == "y":
+    #Check if user wants to follow to enter certain giveaways
+    if want_follow == "yes" or want_follow == "y":
+        want_follow = True
+    else:
+        want_follow = False
 
+    #If user info is correct start script, else load questions again
+    if correct_info == "yes" or correct_info == "y":
         print ("")
         print ("Loading prizes")
 
@@ -313,19 +286,8 @@ def load_login_info():
         print ("")
         load_login_info()
 
-
 #Greeting message when first opened
 print ("Welcome to the Amazon Giveaways Bot!")
 print("")
 
-
-#Checks if internet connection is avaliable
-while check_connection() is False:
-    #Tell user they need to have an internet connection before continuing
-    print ("Failed to retrive internet connection, attempting to connect to network in 5 seconds", end='\r')
-    time.sleep(5)
-    check_connection()
-else:
-    print ("Connected!")
-    print ("")
-    load_login_info()
+load_login_info()
