@@ -108,7 +108,7 @@ def skip_wait_time(email, password, name, want_follow):
 
             #Check if contest has already ended
             try:
-                contest_ended = find_element_by_id('giveaway-ended-header')
+                contest_ended = browser.find_element_by_id('giveaway-ended-header')
             except:
                 contest_ended = False
 
