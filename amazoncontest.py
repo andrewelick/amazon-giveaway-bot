@@ -1,6 +1,5 @@
 import os.path
 import sys
-import pickle
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
@@ -12,11 +11,11 @@ from random import randint
 
 
 #Script the opens amazon, enters user information, and enters in every contest
-def skip_wait_time(email, password, name, want_follow):
+def amazon_bot(email, password, name, want_follow):
 
     #Pages to index to retrieve items, add giveaways urls list, loading percentage
     page_count = 1
-    total_count = 10
+    total_count = 1
     item_urls_list = []
     count_percentage = 100 / total_count
 
@@ -52,21 +51,14 @@ def skip_wait_time(email, password, name, want_follow):
         page_count += 1
 
         #Wait some time
-        random_time = randint(1,3)
+        random_time = randint(1,4)
         time.sleep(random_time)
-
-    #Check if user wants to follow to enter certain giveaways
-    if want_follow == "yes" or want_follow == "y":
-        want_follow = True
-    else:
-        want_follow = False
 
     #Individual item number, used to select the next item in the list
     item_number = 1
 
     #Runs through each giveaway item in item_urls_list
     for link in item_urls_list:
-
         #Open Firefox with the current url for the item
         try:
             options = Options()
@@ -96,7 +88,6 @@ def skip_wait_time(email, password, name, want_follow):
 
             #Print the item number
             print ("Item #"+str(item_number))
-            item_number += 1
 
             #Find item name and price
             try:
@@ -120,26 +111,23 @@ def skip_wait_time(email, password, name, want_follow):
                     amazon_video = browser.find_element_by_id("enter-video-button-announce")
                 except:
                     amazon_video = False
-
-                #Youtube video
-                try:
-                    youtube_video = browser.find_element_by_id("videoSubmitForm")
-                except:
-                    youtube_video = False
-
-                #Sponsor follow button
-                try:
-                    follow_button = browser.find_element_by_name('follow')
-                except:
-                    follow_button = False
-
-                #Standard animated giveaway box
-                try:
-                    #Find animated contest box to click on
-                    click_to_win = browser.find_element_by_id('box_click_target')
-                except:
-                    #Could not find the animated box
-                    click_to_win = False
+                    #Youtube video
+                    try:
+                        youtube_video = browser.find_element_by_id("videoSubmitForm")
+                    except:
+                        youtube_video = False
+                        #Sponsor follow button
+                        try:
+                            follow_button = browser.find_element_by_name('follow')
+                        except:
+                            follow_button = False
+                            #Standard animated giveaway box
+                            try:
+                                #Find animated contest box to click on
+                                click_to_win = browser.find_element_by_id('box_click_target')
+                            except:
+                                #Could not find the animated box
+                                click_to_win = False
 
                 #Click video, follow button, or animated box if present
                 if amazon_video != False:
@@ -246,6 +234,7 @@ def skip_wait_time(email, password, name, want_follow):
         random_time = randint(1,3)
         time.sleep(random_time)
         browser.quit()
+        item_number += 1
         print ("")
 
     #Starts the script over once it completes the last item
@@ -253,7 +242,7 @@ def skip_wait_time(email, password, name, want_follow):
 
 #Restarts the script after it finishes
 def repeat_script(email, password, name, want_follow):
-    skip_wait_time(email, password, name, want_follow)
+    amazon_bot(email, password, name, want_follow)
 
 #Loads the user input questions, email, password, follow, correct info
 def load_login_info():
@@ -281,7 +270,7 @@ def load_login_info():
         print ("Loading prizes")
 
         #Run the script
-        skip_wait_time(email, password, name, want_follow)
+        amazon_bot(email, password, name, want_follow)
     else:
         print ("")
         load_login_info()
