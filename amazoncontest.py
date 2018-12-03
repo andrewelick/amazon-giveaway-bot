@@ -9,50 +9,67 @@ from requests import get
 import time
 from random import randint
 
-
 #Script the opens amazon, enters user information, and enters in every contest
 def amazon_bot(email, password, name, want_follow):
 
     #Pages to index to retrieve items, add giveaways urls list, loading percentage
-    page_count = 1
-    total_count = 1
-    item_urls_list = []
+    item_count = 0
+    total_count = 100
+    item_urls_list = set()
     count_percentage = 100 / total_count
 
-    #Goes to each Page URL and gathers all the prize URLs and puts them into the list item_urls_list
-    while page_count <= total_count:
-        #Page URL for giveaways
-        amazon_url = "https://www.amazon.com/ga/giveaways?pageId="+str(page_count)
+    try:
+        #Go to website with all items in one table
+        response = get("https://www.giveawaylisting.com/index2.html")
+        amazon_soup = BeautifulSoup(response.text, 'html.parser')
+        type(amazon_soup)
+        #Find table, and then all rows within that table
+        all_giveaways_table = amazon_soup.find('table', id='giveaways')
+        all_giveaways_row = all_giveaways_table.findChildren('tr')
 
-        #Load each prize url into the list to be used
+        #Loop through each row and add item URL to set
+        while item_count <= total_count:
+            item_urls_list.add(all_giveaways_row[item_count].find('a')['href'])
+            #Show loading progress
+            percentage_done_loading = int(round(item_count * count_percentage))
+
+            if percentage_done_loading != 100:
+                print (str(percentage_done_loading)+"% completed...", end='\r')
+            else:
+                print ("100% complete, now running script", end='\r')
+                print ("")
+                print ("")
+
+            item_count += 1
+    except:
+        print("Could not load items")
+
+    print ("Removing prizes that you have already entered into...")
+    print ("")
+
+    #Load entered_urls.txt and grab all the previously entered urls and load them into list
+    with open('entered_urls.txt', 'r') as the_file:
+        entered_urls = the_file.readlines()
+
+    #Remove urls that are in entered_urls from item_urls_list
+    for url in entered_urls:
         try:
-            response = get(amazon_url)
-            amazon_soup = BeautifulSoup(response.text, 'html.parser')
-            type(amazon_soup)
-
-            giveaway_container = amazon_soup.find("div", id='giveaway-grid')
-            giveaway_list = giveaway_container.findChildren('div', class_='giveawayItemContainer')
-
-            for items in giveaway_list:
-                item_urls_list.append(items.find('a')['href'])
+            item_urls_list.remove(url.rstrip())
         except:
-            print ("Could not retrieve prizes from "+amazon_url)
+            pass
 
-        #Show loading progress
-        percentage_done_loading = int(round(page_count * count_percentage))
+    #If no prizes left wait 10 minutes and check again
+    if len(item_urls_list) == 0:
+        time_count = 0
+        time_wait = 300
 
-        if percentage_done_loading != 100:
-            print (str(percentage_done_loading)+"% completed...", end='\r')
-        else:
-            print ("100% complete, now running script", end='\r')
-            print ("")
-            print ("")
-
-        page_count += 1
-
-        #Wait some time
-        random_time = randint(1,4)
-        time.sleep(random_time)
+        while time_count < time_wait:
+            time_wait -= 1
+            time_count += 1
+            time.sleep(1)
+            print ("Entered into all the giveaways, will check again in "+str(time_wait), end="\r")
+        print ("")
+        print ("")
 
     #Individual item number, used to select the next item in the list
     item_number = 1
@@ -230,8 +247,14 @@ def amazon_bot(email, password, name, want_follow):
         else:
             print ("Could not load page")
 
+        #Add link to entered_urls.txt if page loaded and found giveaway results
+        if item_page_loaded is True:
+            if contest_ended is True or giveaway_results_text != False:
+                with open('entered_urls.txt', 'a') as the_file:
+                    the_file.write(link+'\n')
+
         #Wait some time before closing window
-        random_time = randint(1,3)
+        random_time = randint(1,2)
         time.sleep(random_time)
         browser.quit()
         item_number += 1
