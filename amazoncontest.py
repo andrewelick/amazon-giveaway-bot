@@ -12,11 +12,12 @@ from random import randint
 #Script the opens amazon, enters user information, and enters in every contest
 def amazon_bot(email, password, name, want_follow):
 
+    print ("Loading prizes")
+
     #Pages to index to retrieve items, add giveaways urls list, loading percentage
     item_count = 0
-    total_count = 100
+    total_count = 1000
     item_urls_list = set()
-    count_percentage = 100 / total_count
 
     try:
         #Go to website with all items in one table
@@ -31,45 +32,46 @@ def amazon_bot(email, password, name, want_follow):
         while item_count <= total_count:
             item_urls_list.add(all_giveaways_row[item_count].find('a')['href'])
             #Show loading progress
-            percentage_done_loading = int(round(item_count * count_percentage))
-
-            if percentage_done_loading != 100:
-                print (str(percentage_done_loading)+"% completed...", end='\r')
-            else:
-                print ("100% complete, now running script", end='\r')
-                print ("")
-                print ("")
+            loading_percentage(item_count, total_count)
 
             item_count += 1
     except:
         print("Could not load items")
 
-    print ("Removing prizes that you have already entered into...")
-    print ("")
+    print ("Removing prizes that you have already entered into")
 
     #Load entered_urls.txt and grab all the previously entered urls and load them into list
     with open('entered_urls.txt', 'r') as the_file:
         entered_urls = the_file.readlines()
 
     #Remove urls that are in entered_urls from item_urls_list
+    total_count = len(entered_urls)
+    item_count = 1
+
     for url in entered_urls:
         try:
             item_urls_list.remove(url.rstrip())
         except:
             pass
+        #Show loading percentage
+        loading_percentage(item_count, total_count)
+
+        item_count += 1
 
     #If no prizes left wait 10 minutes and check again
     if len(item_urls_list) == 0:
         time_count = 0
-        time_wait = 300
+        time_wait = 5
 
         while time_count < time_wait:
-            time_wait -= 1
+            time_message = time_wait - time_count
             time_count += 1
             time.sleep(1)
-            print ("Entered into all the giveaways, will check again in "+str(time_wait), end="\r")
+            print ("Entered into all the giveaways, will check again in "+str(time_message), end="\r")
+        print ("Restarting...")
         print ("")
-        print ("")
+        #Restart the program
+        amazon_bot(email, password, name, want_follow)
 
     #Individual item number, used to select the next item in the list
     item_number = 1
@@ -260,12 +262,22 @@ def amazon_bot(email, password, name, want_follow):
         item_number += 1
         print ("")
 
+    print ("End of prizes, restarting...")
+    print ("")
     #Starts the script over once it completes the last item
-    repeat_script(email, password, name, want_follow)
-
-#Restarts the script after it finishes
-def repeat_script(email, password, name, want_follow):
     amazon_bot(email, password, name, want_follow)
+
+#Loading percentage function
+def loading_percentage(item_count, total_count):
+    count_percentage = 100 / total_count
+    percentage_done_loading = int(item_count * count_percentage)
+
+    if percentage_done_loading < 100:
+        print (str(percentage_done_loading)+"% completed...", end='\r')
+    else:
+        print ("100% complete", end='\r')
+        print ("")
+        print ("")
 
 #Loads the user input questions, email, password, follow, correct info
 def load_login_info():
@@ -290,8 +302,6 @@ def load_login_info():
     #If user info is correct start script, else load questions again
     if correct_info == "yes" or correct_info == "y":
         print ("")
-        print ("Loading prizes")
-
         #Run the script
         amazon_bot(email, password, name, want_follow)
     else:
