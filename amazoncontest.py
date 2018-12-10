@@ -14,29 +14,35 @@ def amazon_bot(email, password, name, want_follow):
 
     print ("Loading prizes")
 
-    #Pages to index to retrieve items, add giveaways urls list, loading percentage
-    item_count = 0
-    total_count = 1000
-    item_urls_list = set()
-
     try:
         #Go to website with all items in one table
         response = get("https://www.giveawaylisting.com/index2.html")
-        amazon_soup = BeautifulSoup(response.text, 'html.parser')
+        amazon_soup = BeautifulSoup(response.text, 'lxml')
         type(amazon_soup)
-        #Find table, and then all rows within that table
+        #Find table, and then all rows
         all_giveaways_table = amazon_soup.find('table', id='giveaways')
         all_giveaways_row = all_giveaways_table.findChildren('tr')
-
-        #Loop through each row and add item URL to set
-        while item_count <= total_count:
-            item_urls_list.add(all_giveaways_row[item_count].find('a')['href'])
-            #Show loading progress
-            loading_percentage(item_count, total_count)
-
-            item_count += 1
     except:
         print("Could not load items")
+        print ("")
+        amazon_bot(email, password, name, want_follow)
+
+    #Pages to index to retrieve items, add giveaways urls list
+    item_urls_list = {}
+    item_count = 1
+    total_count = len(all_giveaways_row)
+
+    #Loop through each row and add item URL to dictionary
+    for row in all_giveaways_row:
+        try:
+            row_sections = row.findAll('td') #All columns of that row
+            price = row_sections[4].text[1:] #Price of item excluding the dollar sign
+            link = row.find('a')['href'] #Link data
+            item_urls_list[link] = float(price) #Adding to dictionary
+        except:
+            pass
+        loading_percentage(item_count, total_count)
+        item_count += 1
 
     print ("Removing prizes that you have already entered into")
 
@@ -44,36 +50,41 @@ def amazon_bot(email, password, name, want_follow):
     with open('entered_urls.txt', 'r') as the_file:
         entered_urls = the_file.readlines()
 
-    #Remove urls that are in entered_urls from item_urls_list
-    total_count = len(entered_urls)
+    #Used for loading percentage when removing old giveaways
     item_count = 1
+    total_count = len(entered_urls)
 
+    #Remove urls that are in entered_urls from item_urls_list
     for url in entered_urls:
-        try:
-            item_urls_list.remove(url.rstrip())
-        except:
-            pass
+        url = url.rstrip()
+        if url in item_urls_list:
+            del item_urls_list[url]
         #Show loading percentage
         loading_percentage(item_count, total_count)
-
         item_count += 1
 
-    #If no prizes left wait 10 minutes and check again
-    if len(item_urls_list) == 0:
+    #If no prizes left wait 6 hours and check again
+    if len(item_urls_list) < 100:
         time_count = 0
-        time_wait = 5
+        time_wait = 21600
 
         while time_count < time_wait:
             time_message = time_wait - time_count
             time_count += 1
-            time.sleep(1)
             print ("Entered into all the giveaways, will check again in "+str(time_message), end="\r")
+            time.sleep(1)
         print ("Restarting...")
         print ("")
         #Restart the program
         amazon_bot(email, password, name, want_follow)
+    else:
+        print ("Entering in "+str(len(item_urls_list))+" new giveaways!")
+        print ("")
 
-    #Individual item number, used to select the next item in the list
+        #Sort items from highest price down
+        item_urls_list = sorted(item_urls_list, key=item_urls_list.get, reverse=True)
+
+    #Item number
     item_number = 1
 
     #Runs through each giveaway item in item_urls_list
