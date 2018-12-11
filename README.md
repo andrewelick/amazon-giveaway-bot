@@ -21,10 +21,10 @@ You can pip install Selenium, BeautifulSoup, and Requests using the command:
 5. Change the `PATH` of the variable profile to the path of the Firefox profile the you just created. `profile = webdriver.FirefoxProfile('')`. This will allow you stay logged in to your Amazon account and run the program in _headless mode_. If you do not do this you will need to change the line `options.headless = True` to `options.headless = False`
 6. Make sure your Amazon account has the correct address assigned as you will not be able to change it once the prize has already been won. Add a phone number to your account to ensure all prizes can be entered into.
 
-####To Run:
+#### To Run:
 Simply run the script in and input the information requested. Then sit back and enjoy the winnings.
 
-####The way it works:
+#### The way it works:
 It will at first ask you some basic information regarding your amazon login information including your: email, password, and name. As well as some giveaway preferences such as entering into giveaways in which you must follow the sponsor to enter. **None of your Amazon login information is saved anywhere and is used strictly to help the script log into your account**
 
 Next the script will parse through a list of thousands of current giveaways and compile them into a list to then be sorted.  It will remove all previously entered giveaways using the entered_urls.txt list and then sort them by price in a descending order. *If python fails to create the entered_urls.txt file then please create one in the same folder as everything else.*
