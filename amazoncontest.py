@@ -8,6 +8,10 @@ from bs4 import BeautifulSoup
 from requests import get
 import time
 from random import randint
+import sqlite3
+import datetime
+from imagetester import captcha_tester
+import urllib.request
 
 #Script the opens amazon, enters user information, and enters in every contest
 def amazon_bot(email, password, name, want_follow):
@@ -46,9 +50,27 @@ def amazon_bot(email, password, name, want_follow):
 
     print ("Removing prizes that you have already entered into")
 
-    #Load entered_urls.txt and grab all the previously entered urls and load them into list
-    with open('entered_urls.txt', 'r') as the_file:
-        entered_urls = the_file.readlines()
+    #Load enteredurls database and grab all the previously entered urls, delete old ones, and load into list
+    database = sqlite3.connect('testdatabase.db', detect_types=sqlite3.PARSE_DECLTYPES)
+    cursor = database.cursor()
+    #Create enteredurls table if not there
+    try:
+        cursor.execute('CREATE TABLE enteredurls (id INTEGER PRIMARY KEY, url TEXT, day date)')
+    except:
+        pass
+
+    entered_urls_database = cursor.execute("SELECT * FROM enteredurls") #Find all rows in enteredurls table
+    entered_urls = []
+
+    for row in entered_urls_database:
+        time_since = datetime.date.today() - row[2] #Compare date of url
+        if time_since.days >= 7: #If url is older than a week delete it
+            cursor.execute("DELETE FROM enteredurls WHERE url=", (row[1],))
+        else:
+            entered_urls.append(row[1])
+    #Save changes and close database connection
+    database.commit()
+    database.close()
 
     #Used for loading percentage when removing old giveaways
     item_count = 1
@@ -56,7 +78,6 @@ def amazon_bot(email, password, name, want_follow):
 
     #Remove urls that are in entered_urls from item_urls_list
     for url in entered_urls:
-        url = url.rstrip()
         if url in item_urls_list:
             del item_urls_list[url]
         #Show loading percentage
@@ -115,6 +136,36 @@ def amazon_bot(email, password, name, want_follow):
                 print ("Logged in")
             except:
                 already_logged = True
+
+            #Check if their is a captcha, save image, check text, and input results
+            try:
+                find_captcha = browser.find_element_by_id('image_captcha')
+                captcha_image = find_captcha.find_element_by_tag_name("img")
+            except:
+                captcha_image = False
+
+            if captcha_image != False:
+                print ("Found captcha, testing")
+                random_time = randint(1, 4)
+                time.sleep(random_time)
+                try:
+                    captcha_src = captcha_image.get_attribute('src')
+                    urllib.request.urlretrieve(captcha_src, "captcha.png")
+                    captcha_results = captcha_tester()
+                    captcha_input = browser.find_element_by_id('image_captcha_input').send_keys(captcha_results)
+                    random_time = randint(3,6)
+                    time.sleep(random_time)
+                    submit_captcha = browser.find_element_by_class_name('a-button-input').click()
+                    time.sleep(2)
+                    try:
+                        captcha_alert = browser.find_element_by_class_name('a-alert-content')
+                        print ("Couldn't input correct captcha")
+                    except:
+                        captcha_alert = False
+                        print ("Captcha was accepted!")
+
+                except:
+                    print ("Captcha tester failed")
 
             #Print the item number
             print ("Item #"+str(item_number))
@@ -260,14 +311,17 @@ def amazon_bot(email, password, name, want_follow):
         else:
             print ("Could not load page")
 
-        #Add link to entered_urls.txt if page loaded and found giveaway results
+        #Add link to enteredurls database if page loaded and found giveaway results
         if item_page_loaded is True:
             if contest_ended is True or giveaway_results_text != False:
-                with open('entered_urls.txt', 'a') as the_file:
-                    the_file.write(link+'\n')
+                database = sqlite3.connect('testdatabase.db', detect_types=sqlite3.PARSE_DECLTYPES)
+                cursor = database.cursor()
+                cursor.execute('INSERT INTO enteredurls(url, day) VALUES(?, ?)', (link, datetime.date.today(), ))
+                database.commit()
+                database.close()
 
         #Wait some time before closing window
-        random_time = randint(1,2)
+        random_time = randint(1,3)
         time.sleep(random_time)
         browser.quit()
         item_number += 1
