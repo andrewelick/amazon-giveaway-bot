@@ -12,6 +12,7 @@ import sqlite3
 import datetime
 from imagetester import captcha_tester
 import urllib.request
+import getpass
 
 #Script the opens amazon, enters user information, and enters in every contest
 def amazon_bot(email, password, name, want_follow):
@@ -348,7 +349,7 @@ def loading_percentage(item_count, total_count):
 def load_login_info():
     print ("Please enter in your Amazon account information to begin")
     email = input("Email: ")
-    password = input("Password: ")
+    password = getpass.getpass('Password:')
     name = input("First Name: ")
     want_follow = input("Do you want to enter follow sponsor contests? (Y/N): ")
     correct_info = input("Is this information correct? (Y/N): ")
