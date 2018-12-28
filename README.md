@@ -3,7 +3,7 @@
 ### This bot is used to automatically enter you into thousands of giveaways at Amazon's giveaway section.
 
 #### What you will need:
-1. **Geckodriver.exe** which is included repository (OSX or Linux find variant)
+1. **Geckodriver** [Can be found here.](https://github.com/mozilla/geckodriver/releases) **Note:** You will need to check the compatibility between `Geckodriver`, `Selenium`, AND `Firefox` as all versions of these will not play together nicely. [More info here.](https://firefox-source-docs.mozilla.org/testing/geckodriver/geckodriver/Support.html)
 2. **Tesseract OCR**
 3. **amazoncontest.py**
 4. **imagetester.py**
@@ -16,8 +16,10 @@
 11. **Pytesseract**
 12. **testdatabase.db** file (this should be automatically created but if not you will have to do so)
 
+
 You can pip install Selenium, BeautifulSoup, Urllib, PIL, PyTesseract and Requests using the command:
 `python pip install Selenium BeautifulSoup4  Urllib PIL Pytesseract Requests`
+**Note:** URLLib and PIL is standard in python 3.5+ and does not need to be aditionally installed.
 
 #### Set up instructions:
 1. Once you have everything installed make sure to place the geckodriver in the same folder as the amazoncontest.py file
@@ -27,6 +29,12 @@ You can pip install Selenium, BeautifulSoup, Urllib, PIL, PyTesseract and Reques
 5. Change the `PATH` of the variable profile to the path of the Firefox profile the you just created. `profile = webdriver.FirefoxProfile('')`. This will allow you stay logged in to your Amazon account and run the program in _headless mode_. If you do not do this you will need to change the line `options.headless = True` to `options.headless = False`
 6. Make sure your Amazon account has the correct address assigned as you will not be able to change it once the prize has already been won. Add a phone number to your account to ensure all prizes can be entered into.
 7. Install the Tesseract OCR. This is used to read any captchas that may appear when the bot is running. **For information for installation** [click here]( https://github.com/tesseract-ocr/tesseract/wiki)
+8. You will require FlashPlayer to play non youtube videos. You don't need this but some videos will break. 
+
+#### Linux considerations
+1. Make sure you change the firefox profile path to your equilivant (default path on linux will be /home/<your user>/.mozilla/firefox/) and geckodriver to fit your enviroment.
+2. Make sure you change the path in imagetester.py to match your enviroment. You do not need the full path for tesseract as long as it exists as a path variable (if the binary is in a system path such as /usr/bin).
+3. Ensure you are using this with python3.5. Python3.6+ should work as well but is untested. 
 
 #### To Run:
 Simply run the script in and input the information requested. Then sit back and enjoy the winnings.
