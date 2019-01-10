@@ -18,7 +18,7 @@
 
 
 You can pip install Selenium, BeautifulSoup, Urllib, PIL, PyTesseract and Requests using the command:
-`python pip install Selenium BeautifulSoup4  Urllib PIL Pytesseract Requests`
+`python -m pip install Selenium BeautifulSoup4  Urllib PIL Pytesseract Requests`
 **Note:** URLLib and PIL is standard in python 3.5+ and does not need to be aditionally installed.
 
 #### Set up instructions:
