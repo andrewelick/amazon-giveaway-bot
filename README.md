@@ -14,7 +14,8 @@
 9. **Urllib**
 10. **PIL**
 11. **Pytesseract**
-12. **testdatabase.db** file (this should be automatically created but if not you will have to do so)
+12. **Lxml**
+13. **testdatabase.db** file (this should be automatically created but if not you will have to do so)
 
 
 You can pip install Selenium, BeautifulSoup, Urllib, PIL, PyTesseract and Requests using the command:
