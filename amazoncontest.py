@@ -66,7 +66,7 @@ def amazon_bot(email, password, name, want_follow):
     for row in entered_urls_database:
         time_since = datetime.date.today() - row[2] #Compare date of url
         if time_since.days >= 7: #If url is older than a week delete it
-            cursor.execute("DELETE FROM enteredurls WHERE url=", (row[1],))
+            cursor.execute("DELETE FROM enteredurls WHERE url=?", (row[1],))
         else:
             entered_urls.append(row[1])
     #Save changes and close database connection
